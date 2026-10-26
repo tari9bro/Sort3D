@@ -19,8 +19,8 @@ import { ControlsDock } from './components/ControlsDock';
 import { CodeInspector } from './components/CodeInspector';
 import { CustomArrayModal } from './components/CustomArrayModal';
 import { AlgorithmInfoModal } from './components/AlgorithmInfoModal';
-import { DeployGuideModal } from './components/DeployGuideModal';
 import { OfflineIndicator } from './components/OfflineIndicator';
+import { Language } from './i18n/translations';
 import confetti from 'canvas-confetti';
 
 function createArrayByPreset(preset: ArrayPreset, size: number): number[] {
@@ -105,7 +105,24 @@ export default function App() {
   const [showCodeInspector, setShowCodeInspector] = useState<boolean>(true);
   const [isCustomModalOpen, setIsCustomModalOpen] = useState<boolean>(false);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState<boolean>(false);
-  const [isDeployModalOpen, setIsDeployModalOpen] = useState<boolean>(false);
+
+  // Language state: English ('en'), French ('fr'), Arabic ('ar')
+  const [language, setLanguage] = useState<Language>(() => {
+    const saved = localStorage.getItem('sort3d_lang');
+    return saved === 'fr' || saved === 'ar' ? saved : 'en';
+  });
+
+  const handleLanguageChange = (newLang: Language) => {
+    setLanguage(newLang);
+    localStorage.setItem('sort3d_lang', newLang);
+    document.documentElement.dir = newLang === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.lang = newLang;
+  };
+
+  useEffect(() => {
+    document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.lang = language;
+  }, [language]);
 
   // Reference to step interval
   const playTimerRef = useRef<number | null>(null);
@@ -394,10 +411,11 @@ export default function App() {
         totalSteps={steps.length}
         onOpenCustomModal={() => setIsCustomModalOpen(true)}
         onOpenInfoModal={() => setIsInfoModalOpen(true)}
-        onOpenDeployModal={() => setIsDeployModalOpen(true)}
         showCodeInspector={showCodeInspector}
         onToggleCodeInspector={() => setShowCodeInspector((v) => !v)}
         isSorted={isSorted}
+        language={language}
+        onChangeLanguage={handleLanguageChange}
       />
 
       {/* 3. Code & Algorithm Logic Inspector */}
@@ -405,11 +423,12 @@ export default function App() {
         <CodeInspector
           algorithm={algorithm}
           currentStep={currentStep}
+          language={language}
           onClose={() => setShowCodeInspector(false)}
         />
       )}
 
-      {/* 4. Unified Ergonomic Collapsible Bottom Control Dock */}
+      {/* 4. Unified Ergonomic Bottom Control Dock with Teacher Educational Footer */}
       <ControlsDock
         isPlaying={isPlaying}
         onTogglePlay={() => setIsPlaying((p) => !p)}
@@ -433,6 +452,7 @@ export default function App() {
         onSelectCameraPreset={handleSelectCamera}
         isDockCollapsed={isDockCollapsed}
         onToggleCollapse={() => setIsDockCollapsed((c) => !c)}
+        language={language}
       />
 
       {/* 5. Custom Array Modal */}
@@ -450,14 +470,8 @@ export default function App() {
         currentAlgorithm={algorithm}
       />
 
-      {/* 7. GitHub Pages Deployment Guide Modal */}
-      <DeployGuideModal
-        isOpen={isDeployModalOpen}
-        onClose={() => setIsDeployModalOpen(false)}
-      />
-
-      {/* 8. Offline Connectivity Status Indicator */}
-      <OfflineIndicator />
+      {/* 7. Offline Connectivity Status Indicator */}
+      <OfflineIndicator language={language} />
     </div>
   );
 }

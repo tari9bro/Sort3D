@@ -46,9 +46,9 @@ export class SortingScene {
   private groundMesh: THREE.Mesh | null = null;
   private currentCameraPreset: CameraViewPreset = 'orbit';
 
-  // Camera animation target
-  private cameraTargetPos = new THREE.Vector3(0, 14, 28);
-  private cameraLookTarget = new THREE.Vector3(0, 5, 0);
+  // Camera animation target elevated to keep 3D bars well clear of bottom dock
+  private cameraTargetPos = new THREE.Vector3(0, 15, 29);
+  private cameraLookTarget = new THREE.Vector3(0, 6.2, 0);
 
   // Sparkle particle system for sorted triumph
   private particles: THREE.Points | null = null;
@@ -691,8 +691,8 @@ export class SortingScene {
     switch (preset) {
       case 'front':
         // Straight-on 2D elevation view
-        this.cameraTargetPos.set(0, 6, dist * 0.95);
-        this.cameraLookTarget.set(0, 5, 0);
+        this.cameraTargetPos.set(0, 7.5, dist * 0.95);
+        this.cameraLookTarget.set(0, 6.2, 0);
         break;
       case 'top':
         // Overhead runway
@@ -702,17 +702,17 @@ export class SortingScene {
       case 'isometric':
         // Isometric 45-degree angle
         this.cameraTargetPos.set(dist * 0.65, dist * 0.75, dist * 0.65);
-        this.cameraLookTarget.set(0, 4, 0);
+        this.cameraLookTarget.set(0, 5.5, 0);
         break;
       case 'cinematic':
         // Low angle dynamic shot
-        this.cameraTargetPos.set(-dist * 0.45, 3.5, dist * 0.5);
-        this.cameraLookTarget.set(0, 5.5, 0);
+        this.cameraTargetPos.set(-dist * 0.45, 4.0, dist * 0.5);
+        this.cameraLookTarget.set(0, 6.2, 0);
         break;
       case 'orbit':
       default:
-        this.cameraTargetPos.set(0, dist * 0.45, dist * 0.88);
-        this.cameraLookTarget.set(0, 5, 0);
+        this.cameraTargetPos.set(0, dist * 0.48, dist * 0.90);
+        this.cameraLookTarget.set(0, 6.0, 0);
         break;
     }
   }
