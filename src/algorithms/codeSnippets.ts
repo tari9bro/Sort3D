@@ -1,0 +1,237 @@
+import { AlgorithmMetadata, AlgorithmType } from '../types/sorting';
+
+export interface CodeLanguageSnippet {
+  language: string;
+  lines: { lineNumber: number; text: string }[];
+}
+
+export const ALGORITHM_METADATA: Record<AlgorithmType, AlgorithmMetadata> = {
+  bubble: {
+    id: 'bubble',
+    name: 'Bubble Sort',
+    shortDescription: 'Repeatedly steps through list, swaps adjacent elements that are out of order.',
+    timeBest: 'O(n)',
+    timeAvg: 'O(n²)',
+    timeWorst: 'O(n²)',
+    spaceWorst: 'O(1)',
+    stable: true,
+    conceptSummary:
+      'Bubble Sort works like physical air bubbles rising in water. In each pass, the highest unsorted element bubbles up to its final position at the right side. With early-exit detection, nearly-sorted inputs complete in O(n) time.',
+    bubbleComparison: 'The benchmark algorithm featured on alg0.dev/bubble-sort.',
+  },
+  quick: {
+    id: 'quick',
+    name: 'Quick Sort',
+    shortDescription: 'Partitions array around a pivot into smaller and greater halves recursively.',
+    timeBest: 'O(n log n)',
+    timeAvg: 'O(n log n)',
+    timeWorst: 'O(n²)',
+    spaceWorst: 'O(log n)',
+    stable: false,
+    conceptSummary:
+      'Quick Sort uses divide-and-conquer. A pivot is chosen, elements smaller than the pivot go to the left, and larger elements go to the right. The pivot lands in its exact final sorted position.',
+    bubbleComparison: 'Exponentially faster than Bubble Sort on large datasets (O(n log n) vs O(n²)).',
+  },
+  merge: {
+    id: 'merge',
+    name: 'Merge Sort',
+    shortDescription: 'Divides array into single items, then repeatedly merges sorted sub-arrays.',
+    timeBest: 'O(n log n)',
+    timeAvg: 'O(n log n)',
+    timeWorst: 'O(n log n)',
+    spaceWorst: 'O(n)',
+    stable: true,
+    conceptSummary:
+      'Merge Sort guarantees O(n log n) worst-case performance by recursively halving the array and zipping sorted halves together with a linear scan.',
+    bubbleComparison: 'Guaranteed O(n log n) time at the cost of O(n) extra memory buffer.',
+  },
+  insertion: {
+    id: 'insertion',
+    name: 'Insertion Sort',
+    shortDescription: 'Builds sorted prefix one item at a time, sliding elements into place like playing cards.',
+    timeBest: 'O(n)',
+    timeAvg: 'O(n²)',
+    timeWorst: 'O(n²)',
+    spaceWorst: 'O(1)',
+    stable: true,
+    conceptSummary:
+      'Intuitive like sorting a hand of playing cards. Picks the next card and shifts larger preceding cards right until the correct slot is found.',
+    bubbleComparison: 'Fewer writes than Bubble Sort and very fast on small or partially sorted arrays.',
+  },
+  selection: {
+    id: 'selection',
+    name: 'Selection Sort',
+    shortDescription: 'Repeatedly finds the smallest remaining item and swaps it to the front.',
+    timeBest: 'O(n²)',
+    timeAvg: 'O(n²)',
+    timeWorst: 'O(n²)',
+    spaceWorst: 'O(1)',
+    stable: false,
+    conceptSummary:
+      'Scans unsorted slice to find the global minimum, then performs exactly one swap per pass. Minimizes total number of array writes (maximum n-1 swaps).',
+    bubbleComparison: 'Unlike Bubble Sort which swaps continuously, Selection Sort swaps at most once per pass.',
+  },
+  heap: {
+    id: 'heap',
+    name: 'Heap Sort',
+    shortDescription: 'Builds a binary max-heap, then extracts max root to the back of the array.',
+    timeBest: 'O(n log n)',
+    timeAvg: 'O(n log n)',
+    timeWorst: 'O(n log n)',
+    spaceWorst: 'O(1)',
+    stable: false,
+    conceptSummary:
+      'Converts array in-place into a binary Max-Heap structure. The root is always maximum, so it is repeatedly swapped to the array end and sifted down.',
+    bubbleComparison: 'Combines the O(n log n) speed of Merge Sort with the O(1) in-place space of Bubble Sort.',
+  },
+  cocktail: {
+    id: 'cocktail',
+    name: 'Cocktail Shaker Sort',
+    shortDescription: 'Bidirectional variation of Bubble Sort that travels back and forth.',
+    timeBest: 'O(n)',
+    timeAvg: 'O(n²)',
+    timeWorst: 'O(n²)',
+    spaceWorst: 'O(1)',
+    stable: true,
+    conceptSummary:
+      'Solves the "turtle" problem in standard Bubble Sort (small values near the end move very slowly). Alternates forward and backward passes.',
+    bubbleComparison: 'Direct evolution of Bubble Sort that sorts from both ends simultaneously.',
+  },
+};
+
+export const ALGORITHM_CODE_SNIPPETS: Record<AlgorithmType, Record<string, { lineNumber: number; text: string }[]>> = {
+  bubble: {
+    javascript: [
+      { lineNumber: 1, text: 'function bubbleSort(arr) {' },
+      { lineNumber: 2, text: '  const n = arr.length;' },
+      { lineNumber: 3, text: '  for (let i = 0; i < n - 1; i++) {' },
+      { lineNumber: 4, text: '    for (let j = 0; j < n - i - 1; j++) {' },
+      { lineNumber: 5, text: '      if (arr[j] > arr[j + 1]) {' },
+      { lineNumber: 6, text: '        [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];' },
+      { lineNumber: 7, text: '      }' },
+      { lineNumber: 8, text: '    }' },
+      { lineNumber: 9, text: '    // arr[n - 1 - i] is now sorted' },
+      { lineNumber: 10, text: '  }' },
+      { lineNumber: 11, text: '  return arr;' },
+      { lineNumber: 12, text: '}' },
+    ],
+    python: [
+      { lineNumber: 1, text: 'def bubble_sort(arr):' },
+      { lineNumber: 2, text: '    n = len(arr)' },
+      { lineNumber: 3, text: '    for i in range(n - 1):' },
+      { lineNumber: 4, text: '        for j in range(n - i - 1):' },
+      { lineNumber: 5, text: '            if arr[j] > arr[j + 1]:' },
+      { lineNumber: 6, text: '                arr[j], arr[j+1] = arr[j+1], arr[j]' },
+      { lineNumber: 7, text: '        # pass finished' },
+      { lineNumber: 8, text: '    return arr' },
+    ],
+  },
+  quick: {
+    javascript: [
+      { lineNumber: 1, text: 'function partition(arr, low, high) {' },
+      { lineNumber: 2, text: '  const pivot = arr[high]; let i = low - 1;' },
+      { lineNumber: 3, text: '  for (let j = low; j < high; j++) {' },
+      { lineNumber: 4, text: '    if (arr[j] < pivot) swap(arr, ++i, j);' },
+      { lineNumber: 5, text: '  }' },
+      { lineNumber: 6, text: '  swap(arr, i + 1, high); return i + 1;' },
+      { lineNumber: 7, text: '}' },
+    ],
+    python: [
+      { lineNumber: 1, text: 'def partition(arr, low, high):' },
+      { lineNumber: 2, text: '    pivot = arr[high]; i = low - 1' },
+      { lineNumber: 3, text: '    for j in range(low, high):' },
+      { lineNumber: 4, text: '        if arr[j] < pivot: i += 1; arr[i], arr[j] = arr[j], arr[i]' },
+      { lineNumber: 5, text: '    arr[i+1], arr[high] = arr[high], arr[i+1]' },
+      { lineNumber: 6, text: '    return i + 1' },
+    ],
+  },
+  merge: {
+    javascript: [
+      { lineNumber: 1, text: 'function merge(arr, start, mid, end) {' },
+      { lineNumber: 2, text: '  const left = arr.slice(start, mid + 1);' },
+      { lineNumber: 3, text: '  const right = arr.slice(mid + 1, end + 1);' },
+      { lineNumber: 4, text: '  while (i < left.length && j < right.length) {' },
+      { lineNumber: 5, text: '    arr[k++] = left[i] <= right[j] ? left[i++] : right[j++];' },
+      { lineNumber: 6, text: '  }' },
+      { lineNumber: 7, text: '}' },
+    ],
+    python: [
+      { lineNumber: 1, text: 'def merge(arr, start, mid, end):' },
+      { lineNumber: 2, text: '    left = arr[start:mid+1]' },
+      { lineNumber: 3, text: '    right = arr[mid+1:end+1]' },
+      { lineNumber: 4, text: '    # zip sorted halves into main array' },
+    ],
+  },
+  insertion: {
+    javascript: [
+      { lineNumber: 1, text: 'for (let i = 1; i < n; i++) {' },
+      { lineNumber: 2, text: '  let key = arr[i]; let j = i - 1;' },
+      { lineNumber: 3, text: '  while (j >= 0 && arr[j] > key) {' },
+      { lineNumber: 4, text: '    arr[j + 1] = arr[j]; j--;' },
+      { lineNumber: 5, text: '  }' },
+      { lineNumber: 6, text: '  arr[j + 1] = key;' },
+      { lineNumber: 7, text: '}' },
+    ],
+    python: [
+      { lineNumber: 1, text: 'for i in range(1, len(arr)):' },
+      { lineNumber: 2, text: '    key = arr[i]; j = i - 1' },
+      { lineNumber: 3, text: '    while j >= 0 and arr[j] > key:' },
+      { lineNumber: 4, text: '        arr[j+1] = arr[j]; j -= 1' },
+      { lineNumber: 5, text: '    arr[j+1] = key' },
+    ],
+  },
+  selection: {
+    javascript: [
+      { lineNumber: 1, text: 'for (let i = 0; i < n - 1; i++) {' },
+      { lineNumber: 2, text: '  let minIdx = i;' },
+      { lineNumber: 3, text: '  for (let j = i + 1; j < n; j++) {' },
+      { lineNumber: 4, text: '    if (arr[j] < arr[minIdx]) minIdx = j;' },
+      { lineNumber: 5, text: '  }' },
+      { lineNumber: 6, text: '  if (minIdx !== i) swap(arr, i, minIdx);' },
+      { lineNumber: 7, text: '}' },
+    ],
+    python: [
+      { lineNumber: 1, text: 'for i in range(len(arr) - 1):' },
+      { lineNumber: 2, text: '    min_idx = i' },
+      { lineNumber: 3, text: '    for j in range(i + 1, len(arr)):' },
+      { lineNumber: 4, text: '        if arr[j] < arr[min_idx]: min_idx = j' },
+      { lineNumber: 5, text: '    arr[i], arr[min_idx] = arr[min_idx], arr[i]' },
+    ],
+  },
+  heap: {
+    javascript: [
+      { lineNumber: 1, text: 'function heapSort(arr) {' },
+      { lineNumber: 2, text: '  // Build max heap' },
+      { lineNumber: 3, text: '  for (let i = Math.floor(n/2)-1; i >= 0; i--) heapify(arr, n, i);' },
+      { lineNumber: 4, text: '  for (let i = n - 1; i > 0; i--) {' },
+      { lineNumber: 5, text: '    swap(arr, 0, i);' },
+      { lineNumber: 6, text: '    heapify(arr, i, 0);' },
+      { lineNumber: 7, text: '  }' },
+      { lineNumber: 8, text: '}' },
+    ],
+    python: [
+      { lineNumber: 1, text: 'def heap_sort(arr):' },
+      { lineNumber: 2, text: '    # Build heap then extract max element' },
+      { lineNumber: 3, text: '    for i in range(len(arr)-1, 0, -1):' },
+      { lineNumber: 4, text: '        arr[0], arr[i] = arr[i], arr[0]' },
+      { lineNumber: 5, text: '        heapify(arr, i, 0)' },
+    ],
+  },
+  cocktail: {
+    javascript: [
+      { lineNumber: 1, text: 'let start = 0, end = n - 1, swapped = true;' },
+      { lineNumber: 2, text: 'while (swapped) {' },
+      { lineNumber: 3, text: '  swapped = false;' },
+      { lineNumber: 4, text: '  for (let i = start; i < end; i++) if (arr[i] > arr[i+1]) swap();' },
+      { lineNumber: 5, text: '  end--;' },
+      { lineNumber: 6, text: '  for (let i = end-1; i >= start; i--) if (arr[i] > arr[i+1]) swap();' },
+      { lineNumber: 7, text: '  start++;' },
+      { lineNumber: 8, text: '}' },
+    ],
+    python: [
+      { lineNumber: 1, text: 'while swapped:' },
+      { lineNumber: 2, text: '    # forward pass bubbles maximum to end' },
+      { lineNumber: 3, text: '    # backward pass bubbles minimum to start' },
+    ],
+  },
+};

@@ -1,0 +1,6 @@
+{
+  "name": "Sort3D - Immersive 3D Algorithm Visualizer & Soundscape",
+  "description": "Interactive 3D sorting algorithm visualizer with spatial Web Audio synthesis, step-by-step code execution, and algorithmic mechanics based on alg0.dev.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
