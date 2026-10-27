@@ -1,6 +1,6 @@
 {
-  "name": "Sort3D - Immersive 3D Algorithm Visualizer & Soundscape",
-  "description": "Interactive 3D sorting algorithm visualizer with spatial Web Audio synthesis, step-by-step code execution, and algorithmic mechanics based on alg0.dev.",
+  "name": "Sort3D - 3D Algorithm Visualizer | Teacher Bara Tariq",
+  "description": "Interactive 3D sorting algorithm visualizer with spatial Web Audio synthesis and step-by-step logic by Teacher Bara Tariq.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

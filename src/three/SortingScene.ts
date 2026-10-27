@@ -58,6 +58,8 @@ export class SortingScene {
 
   // Focus beam spotlight
   private pointerLight: THREE.PointLight;
+  private sharedContactShadowTex: THREE.CanvasTexture | null = null;
+  private isTabVisible: boolean = true;
 
   constructor(container: HTMLElement) {
     this.container = container;
@@ -137,8 +139,12 @@ export class SortingScene {
       this.renderer.compile(this.scene, this.camera);
     }
 
-    // Window resize binding
+    // Pre-create shared contact shadow texture
+    this.sharedContactShadowTex = this.createContactShadowTexture();
+
+    // Window resize and visibility binding
     window.addEventListener('resize', this.onWindowResize);
+    document.addEventListener('visibilitychange', this.onVisibilityChange);
 
     // Start render loop
     this.startLoop();
@@ -416,7 +422,7 @@ export class SortingScene {
     const stepX = totalSpan / Math.max(n - 1, 1);
     const startX = -totalSpan / 2;
 
-    const contactShadowTex = this.createContactShadowTexture();
+    const contactShadowTex = this.sharedContactShadowTex || this.createContactShadowTexture();
     const barWidth = Math.max(0.3, Math.min(0.95, (totalSpan / n) * 0.72));
 
     for (let i = 0; i < n; i++) {
@@ -751,6 +757,11 @@ export class SortingScene {
 
     const tick = () => {
       if (this.isDestroyed) return;
+      if (!this.isTabVisible) {
+        this.frameId = window.setTimeout(tick, 250);
+        return;
+      }
+
       const now = performance.now();
       const dt = Math.min((now - lastTime) / 1000, 0.1);
       lastTime = now;
@@ -817,11 +828,65 @@ export class SortingScene {
     tick();
   }
 
+  private onVisibilityChange = () => {
+    this.isTabVisible = !document.hidden;
+    if (this.isTabVisible && !this.isDestroyed) {
+      this.renderer.render(this.scene, this.camera);
+    }
+  };
+
   public destroy() {
     this.isDestroyed = true;
     window.removeEventListener('resize', this.onWindowResize);
+    document.removeEventListener('visibilitychange', this.onVisibilityChange);
     cancelAnimationFrame(this.frameId);
     clearTimeout(this.frameId);
+
+    if (this.sharedContactShadowTex) {
+      this.sharedContactShadowTex.dispose();
+      this.sharedContactShadowTex = null;
+    }
+
+    for (const b of this.bars) {
+      this.scene.remove(b.group);
+      b.pillarMesh.geometry.dispose();
+      b.pillarMesh.material.dispose();
+      b.coreMesh.geometry.dispose();
+      b.coreMesh.material.dispose();
+      b.crownMesh.geometry.dispose();
+      b.crownMesh.material.dispose();
+      b.pedestalMesh.geometry.dispose();
+      b.pedestalMesh.material.dispose();
+      b.shadowMesh.geometry.dispose();
+      b.shadowMesh.material.dispose();
+      if (b.spriteLabel.material.map) b.spriteLabel.material.map.dispose();
+      b.spriteLabel.material.dispose();
+    }
+    this.bars = [];
+
+    if (this.groundMesh) {
+      this.scene.remove(this.groundMesh);
+      this.groundMesh.geometry.dispose();
+      if (this.groundMesh.material instanceof THREE.Material) {
+        if ('map' in this.groundMesh.material && this.groundMesh.material.map) {
+          (this.groundMesh.material.map as THREE.Texture).dispose();
+        }
+        this.groundMesh.material.dispose();
+      }
+    }
+
+    if (this.particles) {
+      this.scene.remove(this.particles);
+      this.particles.geometry.dispose();
+      if (this.particles.material instanceof THREE.PointsMaterial && this.particles.material.map) {
+        this.particles.material.map.dispose();
+      }
+      (this.particles.material as THREE.Material).dispose();
+    }
+
+    if (this.scene.environment) {
+      this.scene.environment.dispose();
+    }
 
     this.controls.dispose();
     this.renderer.dispose();

@@ -67,7 +67,23 @@ export const TopBar: React.FC<TopBarProps> = ({
   ];
 
   return (
-    <header className="absolute top-0 left-0 right-0 z-20 pointer-events-none p-2 sm:p-3.5 flex flex-col gap-2" dir={isRtl ? 'rtl' : 'ltr'}>
+    <header className="absolute top-0 left-0 right-0 z-20 pointer-events-none p-2 sm:p-3 flex flex-col gap-1.5" dir={isRtl ? 'rtl' : 'ltr'}>
+      {/* Official Institution Banner */}
+      <div
+        className="institution-banner pointer-events-auto self-center flex items-center justify-center flex-wrap gap-2 px-3.5 py-1 bg-slate-900/95 border border-slate-800 rounded-full shadow-lg text-[11px] sm:text-xs text-slate-300 backdrop-blur-md"
+        dir="rtl"
+        lang="ar"
+        aria-label="اسم الأستاذ والمؤسسة"
+      >
+        <span className="teacher-name font-bold text-emerald-400" data-l10n-en="الأستاذ بارة طارق">
+          الأستاذ بارة طارق
+        </span>
+        <span className="banner-divider text-slate-600 hidden sm:inline" aria-hidden="true" data-l10n-en="">•</span>
+        <span className="institution-name text-slate-300 font-medium" data-l10n-en="مركز التكوين المهني والتمهين لعجايلية يونس – تاورة">
+          مركز التكوين المهني والتمهين لعجايلية يونس – تاورة
+        </span>
+      </div>
+
       <div className="flex flex-wrap items-center justify-between gap-2 w-full">
         {/* Left: Teacher Branding & Algorithm Selector */}
         <div className="flex items-center gap-2 pointer-events-auto bg-slate-900 border border-slate-800 rounded-xl px-2.5 py-1.5 shadow-2xl">

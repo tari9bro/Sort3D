@@ -363,8 +363,10 @@ export default function App() {
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Ignore if user is inside an input/textarea
+      // Ignore if user is inside an input/textarea or modal is open
       if (
+        isCustomModalOpen ||
+        isInfoModalOpen ||
         document.activeElement?.tagName === 'INPUT' ||
         document.activeElement?.tagName === 'TEXTAREA' ||
         document.activeElement?.tagName === 'SELECT'

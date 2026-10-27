@@ -2,6 +2,7 @@ export type Language = 'en' | 'fr' | 'ar';
 
 export interface Translations {
   teacherName: string;
+  institutionName: string;
   subtitle: string;
   footerText: string;
   offlineReady: string;
@@ -58,6 +59,7 @@ export interface Translations {
 export const TRANSLATIONS: Record<Language, Translations> = {
   en: {
     teacherName: 'Teacher Bara Tariq',
+    institutionName: 'Vocational Training and Apprenticeship Center Laadjaylia Younes – Taoura',
     subtitle: 'Interactive 3D Algorithm Visualizer',
     footerText:
       'Created by Mr. Bara Tariq using Google AI to teach students how computers work step-by-step logically using algorithms to solve problems, and to visually show the process happening to make it easy for students to understand algorithms.',
@@ -121,6 +123,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
   },
   fr: {
     teacherName: 'Professeur Bara Tariq',
+    institutionName: 'Centre de Formation Professionnelle et de l’Apprentissage Laadjaylia Younes – Taoura',
     subtitle: 'Visualiseur d’Algorithmes 3D Interactif',
     footerText:
       'Créé par M. Bara Tariq à l’aide de Google AI pour enseigner aux étudiants comment les ordinateurs fonctionnent étape par étape logiquement avec des algorithmes pour résoudre des problèmes, et visualiser les processus en temps réel pour faciliter la compréhension des algorithmes.',
@@ -184,6 +187,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
   },
   ar: {
     teacherName: 'الأستاذ بارة طارق',
+    institutionName: 'مركز التكوين المهني والتمهين لعجايلية يونس – تاورة',
     subtitle: 'المحاكي التفاعلي ثلاثي الأبعاد للخوارزميات',
     footerText:
       'تم إنشاء هذا البرنامج بواسطة الأستاذ بارة طارق باستخدام Google AI لتعليم الطلاب كيف تعمل الحواسيب خطوة بخطوة وبشكل منطقي باستخدام الخوارزميات لحل المشكلات، وإظهار العمليات بصرياً لتسهيل فهم الخوارزميات على الطلاب.',
